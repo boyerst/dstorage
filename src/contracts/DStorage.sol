@@ -26,6 +26,17 @@ contract DStorage {
   }
 
   // Event
+  event FileUploaded(
+    uint fileId,
+    string fileHash,
+    uint fileSize,
+    string fileType,
+    string fileName, 
+    string fileDescription,
+    uint uploadTime,
+    address payable uploader
+  );
+
 
   constructor() public {
 
@@ -70,7 +81,8 @@ contract DStorage {
       // Declare fileCount ++ above, because the first time we run through this function we want the fileCount to be 1 (from default 0)
     files[fileCount] = File(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, now, 0x0);
 
-    // Trigger an event
+    // Trigger the event above to tell out clientside anytime a file is uploaded
+    emit FileUploaded(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, now, msg.sender);
 
   }
 
