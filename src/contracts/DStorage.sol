@@ -16,7 +16,7 @@ contract DStorage {
     // Define data type, define attributes
   struct File { 
     uint fileId;
-    uint fileHash;
+    string fileHash;
     uint fileSize;
     string fileType;
     string fileName;
@@ -79,7 +79,8 @@ contract DStorage {
       // With the counter, everytime we call this function the fileId will increment up
       // Declare uint fileCount with default value of 0 in state
       // Declare fileCount ++ above, because the first time we run through this function we want the fileCount to be 1 (from default 0)
-    files[fileCount] = File(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, now, 0x0);
+    files[fileCount] = File(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, now, msg.sender);
+
 
     // Trigger the event above to tell out clientside anytime a file is uploaded
     emit FileUploaded(fileCount, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, now, msg.sender);
@@ -87,3 +88,16 @@ contract DStorage {
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
