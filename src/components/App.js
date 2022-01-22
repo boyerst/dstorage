@@ -34,7 +34,8 @@ class App extends Component {
     console.log(web3)
 
     //Load account
-
+    const accounts = await web3.eth.getAccounts()
+    console.log(accounts)
     //Network ID
 
     //IF got connection, get data from contracts
@@ -74,6 +75,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+
     }
 
     //Bind functions
