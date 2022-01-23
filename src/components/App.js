@@ -36,6 +36,7 @@ class App extends Component {
     //Load account
     const accounts = await web3.eth.getAccounts()
     console.log(accounts)
+    this.setState({ account: accounts[0] })
     //Network ID
 
     //IF got connection, get data from contracts
