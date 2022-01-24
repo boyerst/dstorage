@@ -8,6 +8,62 @@
 
 
 #DESCRIPTION
+- User uploads their dropbox like file to IPFS
+- IPFS will return a hash
+    . Hash =  the Id or location of the file on the IPFS network
+- We take the hash and store it in smart contract
+- Smart contract holds all hashes in one place and puts them on the blockchain
+
+
+- Blockchain will be like the database that tells us where all of the files are
+  . Smart contract will facilitate all of that storage
+- The hash of the file on the IPFS will be the location of the actual file
+- We can retreive it from IPFS once we know that location
+
+
+- App.js Flow
+  1. Main Component (class App extends Component) loads...
+    a) componentWillMount() and code within it are executed
+  
+        i. loadWeb3()
+          . Connects the app to the blockchain
+        ii. loadBlockchainData()
+          . 
+
+
+
+
+
+
+#DEVELOPMENT STEPS
+
+- Setup local dev environment
+- Started off with writing basics of and testing smart contract
+  . Declared variable value 'name' in the contract
+  . Updated migrations file
+  . Migrated contract to blockchain
+  . Interacted w contract in Truffle console to ensure connected to blockchain
+- Write out rest of contract
+  . Mapping
+      + To storing hashes on IPFS we need to code out database like behavior using mapping
+  . Struct
+      + We need to code our 'data object' for our mappings' Value Type 'File'
+        - Declared data type 'Struct'
+        - Defined struct attributes
+  . Function
+      + Need to code a function that adds new files, stores them and fetches them
+      + It will create a new file, put it in the mapping so that we can read it later  
+      + Add requirements to the function to ensure app doesn't break when user tries to upload a file without all the required attributes
+  . Event
+      + Add event to tell clientside when file has been uploaded
+- Clientside code
+  . Setup MetaMask w Ganache
+  . When using a new Ganache workspace...
+    + (1) Import private key (2) label MetaMask account (3) label and save Ganache workspace
+  . Convert web browser into blockchain browser
+    + Open up clientside app and connect it to the blockchain
+  . Convert application into blockchain application
+
 
 
 
@@ -35,7 +91,7 @@
 
 #SERVER START
 
-
+ npm run start
 
 
 #LOGINS & PASSWORDS
@@ -52,16 +108,17 @@
 
 
 *Languages*
- - Language
+ - 
 
 *Frameworks*
 
       *Testing Frameworks*
-      - Framework
+      - 
 
       *Theming Frameworks*
 
 *Libraries*
+
 
 *Template Engines*
 
@@ -71,13 +128,38 @@
 #FRONTEND
 
 
-- SEE above
+*Languages*
+ - React.js
+
+*Frameworks*
+
+      *Testing Frameworks*
+      - 
+
+      *Theming Frameworks*
+
+*Libraries*
+ - web3.js
+
+*Template Engines*
 
 
 #BACKEND
 
 
-- SEE above
+*Languages*
+ - Solidity
+
+*Frameworks*
+
+      *Testing Frameworks*
+
+
+      *Theming Frameworks*
+
+*Libraries*
+
+*Template Engines*
 
 
 #BLOCKCHAIN

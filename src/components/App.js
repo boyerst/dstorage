@@ -48,11 +48,13 @@ class App extends Component {
 
     //Else
       //alert Error
+    this.setState({loading: false})
 
   }
 
   // Get file from user
   captureFile = event => {
+
   }
 
 
@@ -76,6 +78,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+    // Conditions for actions for loading/not loading
+      loading: true
 
     }
 
