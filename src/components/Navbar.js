@@ -24,6 +24,8 @@ class Navbar extends Component {
                  className="text-white"
                  rel="noopener noreferrer"
                  href={"https://etherscan.io/address/" + this.props.account}>
+                {/* Abbreviate account number*/}
+                {/* "If there is an account, show the first 6 #s of the address, otherwise show 0 address ... If there is an account, show the last 4 numbers of the account, otherwise show 0 address*/}
                 {this.props.account ? this.props.account.substring(0,6) : '0x0'}...{this.props.account ? this.props.account.substring(38,42) : '0x0'}
               </a>
             </small>

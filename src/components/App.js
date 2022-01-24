@@ -1,4 +1,4 @@
-//import DStorage from '../abis/DStorage.json'
+import DStorage from '../abis/DStorage.json'
 import React, { Component } from 'react';
 import Navbar from './Navbar'
 import Main from './Main'
@@ -38,19 +38,34 @@ class App extends Component {
     console.log(accounts)
     this.setState({ account: accounts[0] })
     //Network ID
-
-    //IF got connection, get data from contracts
-      //Assign contract
-
-      //Get files amount
-
-      //Load files&sort by the newest
-
-    //Else
-      //alert Error
-    this.setState({loading: false})
-
+      // Fetch Ganache networkId like so...
+    const networkId = await web3.eth.net.getId()
+    // Fetch networks object from artifact
+    const networkData = DStorage.networks[networkId]
+    if(networkData) {
+      // Assign contract
+        // Require 2 peices of information from artifact
+          // 1. ABI: reference the ABI from the DStorage object in DStorage.json artifact file
+          // 2. address: reference this from the networkData that derives from the networkId (above)
+            // networkId derives from the networks object in the artifact
+      const dstorage = new web3.eth.Contract(DStorage.abi, networkData.address)
+      // Set 
+      this.setState({ dstorage })
+      // Get files amount
+      const filesCount = await dstorage.methods.fileCount().call()
+      this.setState({ filesCount })
+      // Load files&sort by the newest
+      for (var i = filesCount; i >= 1; i--) {
+        const file = await dstorage.methods.files(i).call()
+        this.setState({
+          files: [...this.state.files, file]
+        })
+      }
+    } else {
+      window.alert('DStorage contract not deployed to detected network.')
+    }
   }
+
 
   // Get file from user
   captureFile = event => {
@@ -78,9 +93,13 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-    // Conditions for actions for loading/not loading
-      loading: true
-
+      account: '',
+      dstorage: null,
+      files: [],
+      // Conditions for actions for loading/not loading
+      loading: false,
+      type: null,
+      name: null
     }
 
     //Bind functions
