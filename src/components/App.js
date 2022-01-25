@@ -5,7 +5,15 @@ import Main from './Main'
 import Web3 from 'web3';
 import './App.css';
 
+
+
 //Declare IPFS
+const ipfsClient = require('ipfs-http-client')
+// Connect it to free infura client at specific host
+// This gives us an ipfs object inside of our app that we can interact with (ie upload, add, etc.)
+const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }) // leaving out the arguments will default to these values
+
+
 
 class App extends Component {
 
@@ -52,9 +60,13 @@ class App extends Component {
       // Set 
       this.setState({ dstorage })
       // Get files amount
+        // The number of files that are inside of the app
+
       const filesCount = await dstorage.methods.fileCount().call()
+      // Set state with number of files that are inside of app
       this.setState({ filesCount })
       // Load files&sort by the newest
+      // Loop through filesCount in a backwards manner, subtracting 1 each time
       for (var i = filesCount; i >= 1; i--) {
         const file = await dstorage.methods.files(i).call()
         this.setState({
@@ -69,7 +81,22 @@ class App extends Component {
 
   // Get file from user
   captureFile = event => {
-
+    // Prevent the default behaviour of the form so it doesn't refresh after submittal❓
+    event.preventDefault()
+    // Get the files from the form field
+    const file = event.target.files[0]
+    // Use the native file reader from the JS window object
+    const reader = new window.FileReader()
+    // Convert the file to a buffer
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => {
+      this.setState({
+        buffer: Buffer(reader.result),
+        type: file.type,
+        name: file.name
+      })
+      console.log('buffer', this.state.buffer)
+    }
   }
 
 

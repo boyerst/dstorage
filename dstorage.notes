@@ -23,6 +23,7 @@
 
 - App.js Flow
   1. Main Component (class App extends Component) loads...
+    
     a) componentWillMount() and code within it are executed
   
         i. loadWeb3()
@@ -37,32 +38,101 @@
 
 #DEVELOPMENT STEPS
 
+
+--- Serverside code
+
+  "DStorage.sol"
+
 - Setup local dev environment
 - Started off with writing basics of and testing smart contract
   . Declared variable value 'name' in the contract
   . Updated migrations file
   . Migrated contract to blockchain
-  . Interacted w contract in Truffle console to ensure connected to blockchain
+  . Interacted with contract in Truffle console to ensure connected to blockchain
+
+
 - Write out rest of contract
   . Mapping
       + To storing hashes on IPFS we need to code out database like behavior using mapping
   . Struct
-      + We need to code our 'data object' for our mappings' Value Type 'File'
+      + Add our 'data object' for our mapping's Value Type 'File'
         - Declared data type 'Struct'
         - Defined struct attributes
   . Function
-      + Need to code a function that adds new files, stores them and fetches them
+      + Add code that adds new files, stores them and fetches them
       + It will create a new file, put it in the mapping so that we can read it later  
       + Add requirements to the function to ensure app doesn't break when user tries to upload a file without all the required attributes
   . Event
-      + Add event to tell clientside when file has been uploaded
-- Clientside code
+      + Add event to emit (tell clientside) when file has been uploaded
+
+
+--- MetaMask & Ganache configuration
+
   . Setup MetaMask w Ganache
   . When using a new Ganache workspace...
     + (1) Import private key (2) label MetaMask account (3) label and save Ganache workspace
-  . Convert web browser into blockchain browser
-    + Open up clientside app and connect it to the blockchain
-  . Convert application into blockchain application
+
+
+
+--- Connect to the blockchain!
+
+    "App.js"
+
+    1. Convert web browser into blockchain browser
+      + Open up clientside app and connect it to the blockchain
+
+
+    2. Convert application into blockchain application
+
+        3 main functions
+
+              async componentWillMount() {
+                await this.loadWeb3()
+                await this.loadBlockchainData()
+              }
+
+              async loadWeb3() {
+              
+              }
+
+              async loadBlockchainData() {
+
+
+--- Connect user account to Application
+
+    "App.js"
+
+      . Save user account to the state
+      . Pass to NavBar
+        + Reference with this.props in NavBar
+      . Add identicon to appear by user address
+
+
+--- Connect smart contract to the Dapp
+
+    "App.js"
+
+      . We fetch our contract from the network that we are connected to 
+      . Make a JS (web3) version of the contract so we can interact with it on the clientside
+        + Fetch ABI and address to declare networkId and networkData
+        + Set state with our contract
+      . Once we have our contract on the clientside then we loop through it to get all of the files
+        + Fetch and set state with filesCount
+        + Loop through all of the files that exist
+        + Set state with all of the files in the files array
+
+
+--- Main.js Clientside code
+    
+    "App.js"
+
+    . Declare IPFS and fetch the IPFS object directly from package.json
+
+    "Main.js"
+
+    . Add form for uploading files into our Main.js component
+
+    . Wire up the application to be able to store files on IPFS
 
 
 
