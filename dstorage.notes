@@ -8,17 +8,33 @@
 
 
 #DESCRIPTION
-- User uploads their dropbox like file to IPFS
-- IPFS will return a hash
-    . Hash =  the Id or location of the file on the IPFS network
-- We take the hash and store it in smart contract
-- Smart contract holds all hashes in one place and puts them on the blockchain
-
 
 - Blockchain will be like the database that tells us where all of the files are
   . Smart contract will facilitate all of that storage
-- The hash of the file on the IPFS will be the location of the actual file
-- We can retreive it from IPFS once we know that location
+
+
+
+- IPFS Flow
+  . 3 Steps to storing files on IPFS
+
+  1. Prepare file
+      . User uploads their dropbox like file to IPFS
+      . Have to prepare the file by converting it into a format that IPFS will play with
+      . File is prepared like so...
+            1. User adds file into file field in Main.js input form
+            2. This call onChange()
+            3. onChange() calls captureFile()
+            3. captureFile() function executed in App.js, converted to buffer file
+            4. file get passed into Main component in render() and back to Main.js
+        
+  2. Upload file to IPFS
+      . Publish file to IPFS
+  3. Store file on blockchain
+      . Get hash back from IPFS in Step 2
+
+        + Hash =  the Id or location of the file on the IPFS network
+      . Smart contract holds all hashes in one place and puts them on the blockchain
+      . We can retreive it from IPFS once we know that location
 
 
 - App.js Flow
@@ -29,9 +45,9 @@
         i. loadWeb3()
           . Connects the app to the blockchain
         ii. loadBlockchainData()
-          . 
-
-
+          . Connect user account to Dapp
+          . Fetch and create a JS version of your contract for clientside
+          . Set state with contract data
 
 
 
@@ -105,7 +121,12 @@
       . Save user account to the state
       . Pass to NavBar
         + Reference with this.props in NavBar
+      . Display abbreviated account number on page
       . Add identicon to appear by user address
+          + async loadBlockchainData()
+
+
+
 
 
 --- Connect smart contract to the Dapp
@@ -132,7 +153,16 @@
 
     . Add form for uploading files into our Main.js component
 
+    "App.js"
+
     . Wire up the application to be able to store files on IPFS
+    . captureFile() function to convert file into buffer for IPFS format
+      - Whenever user upload
+
+
+    . captureFile() flow... (SEE Description)
+
+ 
 
 
 

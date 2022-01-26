@@ -14,10 +14,19 @@ class Main extends Component {
               {/* Upload via a form */}
               <div className="card mb-3 mx-auto bg-dark" style={{ maxWidth: '512px' }}>
                 <h2 className="text-white text-monospace bg-dark"><b><ins>Share File</ins></b></h2>
-                  {/* */}
+                  {/* 
+                    - uploadFile callback function is passed down to child component as props through <Main /> component instance in App.js
+                    - We call this function by using it as an event handler inside of an onSubmit event
+                    - The global event variable is passed as an argument to the event handler function so that the callback fuction in App.js can access the event object ❓
+                    - Use event.PreventDefault to prevent browser from reloading (default behavior)
+                    - Uses an arrow function that calls the uploadFile function with the description parameter
+                   */}
                   <form onSubmit={(event) => {
                     event.preventDefault()
+                    // Capture the file description
                     const description = this.fileDescription.value
+                    // Upload the file and pass the description as a parameter
+                      // Since we are passing it to a class component we bind with 'this'
                     this.props.uploadFile(description)
                   }} >
                       <div className="form-group">

@@ -81,7 +81,7 @@ class App extends Component {
 
   // Get file from user
   captureFile = event => {
-    // Prevent the default behaviour of the form so it doesn't refresh after submittal❓
+    // Prevent the default behaviour of the form ie prevent the page from reloading upon submitting the form
     event.preventDefault()
     // Get the files from the form field
     const file = event.target.files[0]
@@ -104,6 +104,11 @@ class App extends Component {
   uploadFile = description => {
 
     //Add file to the IPFS
+    // Call our IPFS connection that we declared above
+    // Add the buffer that we created in captureFile()
+    ipfs.add(this.state.buffer, (error, result) => {
+      console.log('IPFS result', result)
+    })
 
       //Check If error
         //Return error
