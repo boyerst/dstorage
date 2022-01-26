@@ -83,13 +83,20 @@ class App extends Component {
   captureFile = event => {
     // Prevent the default behaviour of the form ie prevent the page from reloading upon submitting the form
     event.preventDefault()
-    // Get the files from the form field
+    // Get the file from the synthetic event object created in the onChange event in the form field
+      // The synthetic event contains all of the properties of the files listed in state
+      // So we target the first file in the files array at index 0
     const file = event.target.files[0]
-    // Use the native file reader from the JS window object
+    // Declare how we will use the file
+      // Use the native file reader from the JS window object
     const reader = new window.FileReader()
-    // Convert the file to a buffer
+    // FileReader converts the file to a buffer object
+    // Reads the file from the file object using readAsArrayBuffer method
     reader.readAsArrayBuffer(file)
+    // The onload event is fired when the file read has completed
+      // The event handler is Filereader.onloaded (but here reader.onloadend)
     reader.onloadend = () => {
+      // Within the event we set state with buffer in the file array❓ But there is no buffer in our state❓
       this.setState({
         buffer: Buffer(reader.result),
         type: file.type,
@@ -104,22 +111,48 @@ class App extends Component {
   uploadFile = description => {
 
     //Add file to the IPFS
-    // Call our IPFS connection that we declared above
-    // Add the buffer that we created in captureFile()
+    // Use our IPFS connection that we declared above
+    // Call ipfs.add to add the buffer that we created in captureFile()
+    // this.state.buffer was created in captureFile()
     ipfs.add(this.state.buffer, (error, result) => {
       console.log('IPFS result', result)
-    })
+      // Check if error
+      if(error) {
+        console.log(error)
+        return
+      }
+      // Set state as loading to show the loader...
+      this.setState({ loading: true })
 
-      //Check If error
-        //Return error
-
-      //Set state to loading
-
-      //Assign value for the file without extension
-
+      // Assign value for the file without extension
+      if(this.state.type === ''){
+        this.setState({type: 'none'})
+      }
       //Call smart contract uploadFile function 
-
+      this.state.dstorage.methods.uploadFile(
+        // Get hash back from IPFS
+        result[0].hash, 
+        result[0].size, 
+        this.state.type, 
+        this.state.name, 
+        description).send({ from: this.state.account }).on('transactionHash', (hash) => {
+        // Clear state
+        this.setState({
+          loading: false,
+          type: null,
+          name: null
+       })
+      window.location.reload()
+      }).on('error', (e) =>{
+        window.alert('Error')
+        this.setState({loading: false})
+      })
+    })
   }
+
+      
+
+  
 
   //Set states
   constructor(props) {
@@ -142,7 +175,9 @@ class App extends Component {
       <div>
         <Navbar account={this.state.account} />
         { this.state.loading
+          // If this.state.loading is true then show the loader...
           ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+          // If it is not true then show the form
           : <Main
               files={this.state.files}
               captureFile={this.captureFile}
