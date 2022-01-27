@@ -65,7 +65,8 @@ class App extends Component {
       const filesCount = await dstorage.methods.fileCount().call()
       // Set state with number of files that are inside of app
       this.setState({ filesCount })
-      // Load files&sort by the newest
+      // Load files into the app & sort by the newest
+        // We are sorting by the newest by sorting from the index at the end of the array
       // Loop through filesCount in a backwards manner, subtracting 1 each time
       for (var i = filesCount; i >= 1; i--) {
         const file = await dstorage.methods.files(i).call()
@@ -123,20 +124,22 @@ class App extends Component {
       }
       // Set state as loading to show the loader...
       this.setState({ loading: true })
-
       // Assign value for the file without extension
       if(this.state.type === ''){
         this.setState({type: 'none'})
       }
-      //Call smart contract uploadFile function 
+
+      //Call smart contract uploadFile function from serverside
+        // What is the specific syntax here for using '.methods' ❓
       this.state.dstorage.methods.uploadFile(
         // Get hash back from IPFS
         result[0].hash, 
         result[0].size, 
         this.state.type, 
         this.state.name, 
+        // What is the syntax here❓ Are we sending the file from state to  ❓
         description).send({ from: this.state.account }).on('transactionHash', (hash) => {
-        // Clear state
+        // Clear state after it loads to blockchain❓
         this.setState({
           loading: false,
           type: null,
